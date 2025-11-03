@@ -91,7 +91,7 @@ export function Search() {
                     />
                 </Box>
 
-                <Flex gap={Spaces.ONE} flexDirection={["column", "row"]}>
+                <Flex gap={Spaces.THREE} flexDirection={["column", "row"]}>
                     <Button
                         onClick={handleSearch}
                         disabled={isLoadingHeroes}
@@ -128,7 +128,7 @@ export function Search() {
                 )}
 
                 {error && (
-                    <StatusMessage style={{ color: '#ff6b6b' }}>
+                    <StatusMessage style={{ color: '#FF0000' }}>
                         {error.message || "Erro ao carregar dados"}
                     </StatusMessage>
                 )}
@@ -142,12 +142,6 @@ export function Search() {
                 {!isLoadingHeroes && !searchTerm && filteredHeroes.length === 0 && (
                     <StatusMessage>
                         Digite um nome para buscar heróis
-                    </StatusMessage>
-                )}
-
-                {!isLoadingHeroes && !searchTerm && filteredHeroes.length > 0 && (
-                    <StatusMessage>
-                        {heroes.length} heróis disponíveis - Digite um nome para buscar
                     </StatusMessage>
                 )}
 
