@@ -29,10 +29,13 @@ const SearchContainer = styled(Flex)`
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  border-radius: ${BorderRadiuses.TWO};
+  padding: ${Spaces.FOUR};
+  gap: ${Spaces.TWO};
   
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: ${Spaces.ONE};
+    gap: ${Spaces.TWO};
   }
 `;
 
@@ -46,6 +49,7 @@ const ButtonContainer = styled(Flex)`
     width: 100%;
   }
 `;
+
 
 export function Search() {
     const { heroes, isLoadingHeroes, error } = useHeroes();
@@ -80,43 +84,48 @@ export function Search() {
 
     return (
         <>
-            <SearchContainer
-                mx={[Spaces.None, "auto"]}
-                mt={[Spaces.THREE, Spaces.FIVE]}
+            {/* ✅ Container principal com espaçamento adequado */}
+            <Box
+                mx={[Spaces.ONE, "auto"]}
+                mt={[Spaces.FOUR, Spaces.FIVE]} // ✅ Aumentei o margin-top
+                mb={[Spaces.THREE, Spaces.FOUR]} // ✅ Aumentei o margin-bottom
                 px={[Spaces.ONE, Spaces.NONE]}
-                mb={[Spaces.TWO, Spaces.FOUR]}
-                flexDirection={["column", "row"]}
-                alignItems={["stretch", "center"]}
             >
-                <Box flexGrow="1" mr={[0, Spaces.TWO]} mb={[Spaces.ONE, 0]}>
-                    <SearchField
-                        placeholder="Digite um nome de herói ou heroína" // ← SEM EMOJI
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                </Box>
 
-                <ButtonContainer>
-                    <Button
-                        onClick={handleSearch}
-                        disabled={isLoadingHeroes}
-                        width={["100%", "auto"]}
-                    >
-                        Buscar {/* ← SEM EMOJI */}
-                    </Button>
+                <SearchContainer
+                    flexDirection={["column", "row"]}
+                    alignItems={["stretch", "center"]}
+                >
+                    <Box flexGrow="1" mr={[0, Spaces.TWO]} mb={[Spaces.ONE, 0]}>
+                        <SearchField
+                            placeholder="Digite o nome de um herói ou heroína..."
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                        />
+                    </Box>
 
-                    {searchTerm && (
+                    <ButtonContainer>
                         <Button
-                            ghost
-                            onClick={handleClearSearch}
+                            onClick={handleSearch}
+                            disabled={isLoadingHeroes}
                             width={["100%", "auto"]}
                         >
-                            Limpar {/* ← SEM EMOJI */}
+                            Buscar
                         </Button>
-                    )}
-                </ButtonContainer>
-            </SearchContainer>
+
+                        {searchTerm && (
+                            <Button
+                                ghost
+                                onClick={handleClearSearch}
+                                width={["100%", "auto"]}
+                            >
+                                Limpar
+                            </Button>
+                        )}
+                    </ButtonContainer>
+                </SearchContainer>
+            </Box>
 
             <HeroesGrid px={[Spaces.ONE, Spaces.TWO]} pb={[Spaces.ONE, Spaces.TWO]}>
                 {isLoadingHeroes && (

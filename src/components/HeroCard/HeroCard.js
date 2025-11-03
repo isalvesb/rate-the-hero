@@ -34,6 +34,7 @@ const ModernCard = styled(Card)`
   border: 1px solid ${Colors.GRAY_200};
   transition: all 0.3s ease;
   overflow: hidden;
+  margin-bottom: ${Spaces.THREE}; /* ✅ Adiciona espaçamento entre os cartões */
   
   &:hover {
     transform: translateY(-4px);
@@ -45,40 +46,59 @@ const ModernCard = styled(Card)`
   }
 `;
 
+// ✅ Novo componente para o divisor
+const Divider = styled.div`
+  height: 1px;
+  background: linear-gradient(to right, transparent, ${Colors.GRAY_300}, transparent);
+  margin: ${Spaces.TWO} 0;
+`;
+
+// ✅ Container principal com espaçamento
+const CardContainer = styled(Box)`
+  padding: ${Spaces.TWO};
+`;
+
 export function HeroCard({ secretIdentity, name, picture, universe, id }) {
     const { getHeroAvaliation } = useHero();
     const heroAvaliation = getHeroAvaliation(id);
 
     return (
         <ModernCard>
-            <InformationGrid p={Spaces.TWO} mb={Spaces.ONE}>
-                <Box>
-                    <Caption as="div" color={Colors.GRAY_500}>
-                        {secretIdentity}
-                    </Caption>
-                    <Box mb={Spaces.ONE}>
-                        <HeadingTwo style={{
-                            fontSize: '1.25rem',
-                            margin: 0,
-                            color: Colors.GRAY_800
-                        }}>
-                            {name}
-                        </HeadingTwo>
+            <CardContainer>
+                <InformationGrid mb={Spaces.ONE}>
+                    <Box>
+                        <Caption as="div" color={Colors.GRAY_500}>
+                            {secretIdentity}
+                        </Caption>
+                        <Box mb={Spaces.ONE}>
+                            <HeadingTwo style={{
+                                fontSize: '1.25rem',
+                                margin: 0,
+                                color: Colors.GRAY_800
+                            }}>
+                                {name}
+                            </HeadingTwo>
+                        </Box>
+                        <Description as="div" color={Colors.GRAY_600}>
+                            <strong>🌍 Universo:</strong> {universe}
+                        </Description>
+                        <Description as="div" color={Colors.GRAY_600}>
+                            <strong>⭐ Nota:</strong> {heroAvaliation?.avaliation || "Sem avaliação"}
+                        </Description>
                     </Box>
-                    <Description as="div" color={Colors.GRAY_600}>
-                        <strong>🌍 Universo:</strong> {universe}
-                    </Description>
-                    <Description as="div" color={Colors.GRAY_600}>
-                        <strong>⭐ Nota:</strong> {heroAvaliation?.avaliation || "Sem avaliação"}
-                    </Description>
+                    <HeroAvatar src={picture} />
+                </InformationGrid>
+
+                {/* ✅ Adiciona divisor visual */}
+                <Divider />
+
+                {/* ✅ Botão com melhor espaçamento */}
+                <Box pt={Spaces.ONE}>
+                    <ButtonLink to={`/detalhes/${id}`}>
+                        Ver Mais
+                    </ButtonLink>
                 </Box>
-                <HeroAvatar src={picture} />
-            </InformationGrid>
-            <Box px={Spaces.TWO} pb={Spaces.TWO}>
-                <ButtonLink to={`/detalhes/${id}`}>
-                    Ver Mais
-                </ButtonLink>
-            </Box>
+            </CardContainer>
         </ModernCard>
     );
 }
