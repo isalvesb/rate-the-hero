@@ -1,79 +1,167 @@
-import React from 'react';
-import { Flex, Box } from 'reflexbox';
-import styled from 'styled-components';
-import { Button } from '../common-components/Button/Button';
-import { SearchField } from '../common-components/SearchField/SearchField';
-import { HeroCard } from '../components/HeroCard/HeroCard';
-import { Spaces } from '../shared/DesignTokens';
-import { useHeroes } from '../hooks/useHeroes'; // <-- adiciona esse import
+import React from "react";
+import { Flex, Box } from "reflexbox";
+import styled from "styled-components";
+import { SearchField } from "../common-components/SearchField/SearchField";
+import { Button } from "../common-components/Button/Button"; // ← Importar o Button
+import { HeroCard } from "../components/HeroCard/HeroCard";
+import { Spaces } from "../shared/DesignTokens";
+import { useHeroes } from "../hooks/useHeroes";
 
 const HeroesGrid = styled(Box)`
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: ${Spaces.ONE_HALF};
-	@media (min-width: 1024px) {
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		gap: ${Spaces.TWO};
-	}
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${Spaces.ONE_HALF};
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: ${Spaces.TWO};
+  }
+`;
+
+const StatusMessage = styled.p`
+  text-align: center;
+  grid-column: 1 / -1;
+  padding: ${Spaces.TWO};
+`;
+
+const SearchContainer = styled(Flex)`
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: ${Spaces.ONE};
+  }
 `;
 
 export function Search() {
-    const [search, setSearch] = React.useState({
-        value: 'captain',
-        doSearch: false,
-    });
+    const { heroes, isLoadingHeroes, error } = useHeroes();
+    const [searchValue, setSearchValue] = React.useState("");
+    const [searchTerm, setSearchTerm] = React.useState(""); // Termo atual de busca
 
-    // usa o hook customizado
-    const { heroes, isLoadingHeroes, searchHero } = useHeroes(search.value);
+    // Função para executar a busca
+    const handleSearch = () => {
+        setSearchTerm(searchValue);
+    };
 
-    React.useEffect(() => {
-        if (search.doSearch) {
-            searchHero().then(() => {
-                setSearch((prevValue) => ({ ...prevValue, doSearch: false }));
-            });
+    // Buscar ao pressionar Enter
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
         }
-    }, [search, searchHero]);
+    };
 
-    function handleUpdateSearchValue(e) {
-        setSearch((prev) => ({ ...prev, value: e.target.value }));
-    }
+    // Função para limpar a busca
+    const handleClearSearch = () => {
+        setSearchValue("");
+        setSearchTerm("");
+    };
 
-    function handleSearch() {
-        setSearch((prev) => ({ ...prev, doSearch: true }));
-    }
+    // Função simplificada para obter imagem
+    const getHeroImage = (hero) => {
+        return hero.images?.md || "https://via.placeholder.com/150x200/333/fff?text=Sem+Imagem";
+    };
+
+    // Filtra os heróis baseado no searchTerm
+    const filteredHeroes = React.useMemo(() => {
+        if (!searchTerm.trim()) return heroes;
+
+        return heroes.filter((hero) =>
+            hero.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }, [heroes, searchTerm]);
 
     return (
         <>
-            <Flex
-                width={['100%', '600px']}
-                mx={[Spaces.None, 'auto']}
+            <SearchContainer
+                mx={[Spaces.None, "auto"]}
                 mt={[Spaces.THREE, Spaces.FIVE]}
                 px={[Spaces.ONE, Spaces.NONE]}
                 mb={[Spaces.TWO, Spaces.FOUR]}
+                flexDirection={["column", "row"]}
+                alignItems={["stretch", "center"]}
             >
-                <Box flexGrow="1">
+                <Box flexGrow="1" mr={[0, Spaces.ONE]} mb={[Spaces.ONE, 0]}>
                     <SearchField
                         placeholder="Digite um nome de herói ou heroína"
-                        onKeyUp={handleUpdateSearchValue}
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        onKeyPress={handleKeyPress} // Buscar ao pressionar Enter
                     />
                 </Box>
-                <Box ml={Spaces.TWO}>
-                    <Button onClick={handleSearch}>Buscar</Button>
+
+                <Flex gap={Spaces.ONE} flexDirection={["column", "row"]}>
+                    <Button
+                        onClick={handleSearch}
+                        disabled={isLoadingHeroes}
+                    >
+                        Buscar
+                    </Button>
+
+                    {searchTerm && (
+                        <Button
+                            ghost
+                            onClick={handleClearSearch}
+                        >
+                            Limpar
+                        </Button>
+                    )}
+                </Flex>
+            </SearchContainer>
+
+            {/* Mostra o termo buscado */}
+            {searchTerm && (
+                <Box textAlign="center" mb={Spaces.TWO}>
+                    <p>
+                        Resultados para: <strong>"{searchTerm}"</strong>
+                        {filteredHeroes.length > 0 && (
+                            <span> - {filteredHeroes.length} heróis encontrados</span>
+                        )}
+                    </p>
                 </Box>
-            </Flex>
+            )}
 
             <HeroesGrid px={[Spaces.ONE, Spaces.TWO]} pb={[Spaces.ONE, Spaces.TWO]}>
-                {isLoadingHeroes && <p>Carregando...</p>}
-                {!isLoadingHeroes && heroes?.results?.map((hero) => (
-                    <HeroCard
-                        key={hero.id}
-                        id={hero.id}
-                        secretIdentity={hero.biography['full-name']}
-                        name={hero.name}
-                        picture={hero.image.url}
-                        universe={hero.biography.publisher}
-                    />
-                ))}
+                {isLoadingHeroes && (
+                    <StatusMessage>Carregando heróis...</StatusMessage>
+                )}
+
+                {error && (
+                    <StatusMessage style={{ color: '#ff6b6b' }}>
+                        {error.message || "Erro ao carregar dados"}
+                    </StatusMessage>
+                )}
+
+                {!isLoadingHeroes && searchTerm && filteredHeroes.length === 0 && (
+                    <StatusMessage>
+                        Nenhum herói encontrado para "{searchTerm}"
+                    </StatusMessage>
+                )}
+
+                {!isLoadingHeroes && !searchTerm && filteredHeroes.length === 0 && (
+                    <StatusMessage>
+                        Digite um nome para buscar heróis
+                    </StatusMessage>
+                )}
+
+                {!isLoadingHeroes && !searchTerm && filteredHeroes.length > 0 && (
+                    <StatusMessage>
+                        {heroes.length} heróis disponíveis - Digite um nome para buscar
+                    </StatusMessage>
+                )}
+
+                {!isLoadingHeroes &&
+                    filteredHeroes.map((hero) => (
+                        <HeroCard
+                            key={hero.id}
+                            id={hero.id}
+                            secretIdentity={hero.biography?.["fullName"] || "Desconhecido"}
+                            name={hero.name}
+                            picture={getHeroImage(hero)}
+                            universe={hero.biography?.publisher || "Desconhecido"}
+                        />
+                    ))}
             </HeroesGrid>
         </>
     );

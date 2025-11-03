@@ -1,5 +1,5 @@
 {
-  "name": "rate-the-heroin",
+  "name": "rate-the-hero",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +17,8 @@
     "react-scripts": "5.0.1",
     "reflexbox": "^4.0.6",
     "styled-components": "^6.1.19",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.7.1"
   },
   "scripts": {
     "start": "react-scripts start",

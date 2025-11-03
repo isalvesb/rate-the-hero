@@ -1,32 +1,50 @@
-import styled from 'styled-components';
-import { Box } from 'reflexbox';
-import { Card } from '../../common-components/Card/Card';
-import { Caption } from '../../common-components/Caption/Caption';
-import { Description } from '../../common-components/Description/Description';
-import { HeadingTwo } from '../../common-components/HeadingTwo/HeadingTwo';
-import { ButtonLink } from '../../common-components/ButtonLink/ButtonLink';
+import React from "react";
+import styled from "styled-components";
+import { useHero } from "../../hooks/useHero";
+import { Box } from "reflexbox";
+import { Card } from "../../common-components/Card/Card";
+import { Caption } from "../../common-components/Caption/Caption";
+import { Description } from "../../common-components/Description/Description";
+import { HeadingTwo } from "../../common-components/HeadingTwo/HeadingTwo";
+import { ButtonLink } from "../../common-components/ButtonLink/ButtonLink";
 import {
     BorderRadiuses,
     Colors,
     Shadows,
     Spaces,
-} from '../../shared/DesignTokens';
+} from "../../shared/DesignTokens";
+
 const InformationGrid = styled(Box)`
-	display: grid;
-	grid-template-columns: 1fr 70px;
-	gap: ${Spaces.TWO};
+  display: grid;
+  grid-template-columns: 1fr 70px;
+  gap: ${Spaces.TWO};
 `;
+
 const HeroAvatar = styled.div`
-	width: 100%;
-	height: 70px;
-	box-shadow: ${Shadows.ONE};
-	border-radius: ${BorderRadiuses.ONE};
-	background-image: url(${(props) => props.src});
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
+  width: 100%;
+  height: 70px;
+  box-shadow: ${Shadows.ONE};
+  border-radius: ${BorderRadiuses.ONE};
+  background-image: url("${(props) => props.src}");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: #f0f0f0; /* Cor de fallback */
+  
+  /* Garantir que a imagem seja exibida */
+  display: block;
+  min-height: 120px;
 `;
+
 export function HeroCard({ secretIdentity, name, picture, universe, id }) {
+    const { getHeroAvaliation } = useHero();
+    const heroAvaliation = getHeroAvaliation(id);
+
+    // Debug no console
+    React.useEffect(() => {
+        console.log('🖼️ HeroCard recebeu picture:', { name, picture });
+    }, [picture, name]);
+
     return (
         <Card>
             <InformationGrid p={Spaces.TWO} mb={Spaces.ONE_HALF}>
@@ -41,7 +59,7 @@ export function HeroCard({ secretIdentity, name, picture, universe, id }) {
                         <strong>Universo:</strong> {universe}
                     </Description>
                     <Description as="div" color={Colors.GRAY_700}>
-                        <strong>Nota atual:</strong> -
+                        <strong>Nota atual:</strong> {heroAvaliation?.avaliation || "-"}
                     </Description>
                 </Box>
                 <HeroAvatar src={picture} />
