@@ -39,12 +39,6 @@ const HeroAvatar = styled.div`
 export function HeroCard({ secretIdentity, name, picture, universe, id }) {
     const { getHeroAvaliation } = useHero();
     const heroAvaliation = getHeroAvaliation(id);
-
-    // Debug no console
-    React.useEffect(() => {
-        console.log('🖼️ HeroCard recebeu picture:', { name, picture });
-    }, [picture, name]);
-
     return (
         <Card>
             <InformationGrid p={Spaces.TWO} mb={Spaces.ONE_HALF}>

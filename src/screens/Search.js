@@ -2,7 +2,7 @@ import React from "react";
 import { Flex, Box } from "reflexbox";
 import styled from "styled-components";
 import { SearchField } from "../common-components/SearchField/SearchField";
-import { Button } from "../common-components/Button/Button"; // ← Importar o Button
+import { Button } from "../common-components/Button/Button";
 import { HeroCard } from "../components/HeroCard/HeroCard";
 import { Spaces } from "../shared/DesignTokens";
 import { useHeroes } from "../hooks/useHeroes";
@@ -35,10 +35,22 @@ const SearchContainer = styled(Flex)`
   }
 `;
 
+// Container específico para os botões
+const ButtonContainer = styled(Flex)`
+  gap: ${Spaces.TWO}; /* Espaçamento médio entre os botões */
+  flex-direction: row;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: ${Spaces.ONE};
+    width: 100%;
+  }
+`;
+
 export function Search() {
     const { heroes, isLoadingHeroes, error } = useHeroes();
     const [searchValue, setSearchValue] = React.useState("");
-    const [searchTerm, setSearchTerm] = React.useState(""); // Termo atual de busca
+    const [searchTerm, setSearchTerm] = React.useState("");
 
     // Função para executar a busca
     const handleSearch = () => {
@@ -82,19 +94,21 @@ export function Search() {
                 flexDirection={["column", "row"]}
                 alignItems={["stretch", "center"]}
             >
-                <Box flexGrow="1" mr={[0, Spaces.ONE]} mb={[Spaces.ONE, 0]}>
+                <Box flexGrow="1" mr={[0, Spaces.TWO]} mb={[Spaces.ONE, 0]}>
                     <SearchField
                         placeholder="Digite um nome de herói ou heroína"
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
-                        onKeyPress={handleKeyPress} // Buscar ao pressionar Enter
+                        onKeyPress={handleKeyPress}
                     />
                 </Box>
 
-                <Flex gap={Spaces.THREE} flexDirection={["column", "row"]}>
+                {/* Container dos botões com espaçamento adequado */}
+                <ButtonContainer>
                     <Button
                         onClick={handleSearch}
                         disabled={isLoadingHeroes}
+                        width={["100%", "auto"]} /* Largura total no mobile */
                     >
                         Buscar
                     </Button>
@@ -103,11 +117,12 @@ export function Search() {
                         <Button
                             ghost
                             onClick={handleClearSearch}
+                            width={["100%", "auto"]} /* Largura total no mobile */
                         >
                             Limpar
                         </Button>
                     )}
-                </Flex>
+                </ButtonContainer>
             </SearchContainer>
 
             {/* Mostra o termo buscado */}
