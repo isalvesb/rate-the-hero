@@ -1,6 +1,7 @@
 import React from 'react'; // ← ADICIONAR ESTA LINHA
 import styled from 'styled-components';
-import { Flex, Box } from 'reflexbox';
+import { Flex } from '../common-components/Flex/Flex';
+import { Box } from '../common-components/Box/Box';
 import {
     BorderRadiuses,
     Colors,

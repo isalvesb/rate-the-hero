@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Box } from 'reflexbox';
+import { Box } from '../../common-components/Box/Box'
 import { Card } from '../../common-components/Card/Card';
 import { Caption } from '../../common-components/Caption/Caption';
 import { Description } from '../../common-components/Description/Description';

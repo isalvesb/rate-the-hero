@@ -1,5 +1,6 @@
 import React from "react";
-import { Flex, Box } from "reflexbox";
+import { Flex } from "../common-components/Flex/Flex";
+import { Box } from "../common-components/Box/Box";
 import styled from "styled-components";
 import { SearchField } from "../common-components/SearchField/SearchField";
 import { Button } from "../common-components/Button/Button";
