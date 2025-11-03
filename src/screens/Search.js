@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { SearchField } from "../common-components/SearchField/SearchField";
 import { Button } from "../common-components/Button/Button";
 import { HeroCard } from "../components/HeroCard/HeroCard";
-import { Spaces } from "../shared/DesignTokens";
+import { Spaces, Colors, BorderRadiuses, Shadows } from "../shared/DesignTokens";
 import { useHeroes } from "../hooks/useHeroes";
 
 const HeroesGrid = styled(Box)`
@@ -35,9 +35,8 @@ const SearchContainer = styled(Flex)`
   }
 `;
 
-// Container específico para os botões
 const ButtonContainer = styled(Flex)`
-  gap: ${Spaces.TWO}; /* Espaçamento médio entre os botões */
+  gap: ${Spaces.TWO};
   flex-direction: row;
   
   @media (max-width: 768px) {
@@ -52,33 +51,27 @@ export function Search() {
     const [searchValue, setSearchValue] = React.useState("");
     const [searchTerm, setSearchTerm] = React.useState("");
 
-    // Função para executar a busca
     const handleSearch = () => {
         setSearchTerm(searchValue);
     };
 
-    // Buscar ao pressionar Enter
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleSearch();
         }
     };
 
-    // Função para limpar a busca
     const handleClearSearch = () => {
         setSearchValue("");
         setSearchTerm("");
     };
 
-    // Função simplificada para obter imagem
     const getHeroImage = (hero) => {
         return hero.images?.md || "https://via.placeholder.com/150x200/333/fff?text=Sem+Imagem";
     };
 
-    // Filtra os heróis baseado no searchTerm
     const filteredHeroes = React.useMemo(() => {
         if (!searchTerm.trim()) return heroes;
-
         return heroes.filter((hero) =>
             hero.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
@@ -96,46 +89,33 @@ export function Search() {
             >
                 <Box flexGrow="1" mr={[0, Spaces.TWO]} mb={[Spaces.ONE, 0]}>
                     <SearchField
-                        placeholder="Digite um nome de herói ou heroína"
+                        placeholder="Digite um nome de herói ou heroína" // ← SEM EMOJI
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         onKeyPress={handleKeyPress}
                     />
                 </Box>
 
-                {/* Container dos botões com espaçamento adequado */}
                 <ButtonContainer>
                     <Button
                         onClick={handleSearch}
                         disabled={isLoadingHeroes}
-                        width={["100%", "auto"]} /* Largura total no mobile */
+                        width={["100%", "auto"]}
                     >
-                        Buscar
+                        Buscar {/* ← SEM EMOJI */}
                     </Button>
 
                     {searchTerm && (
                         <Button
                             ghost
                             onClick={handleClearSearch}
-                            width={["100%", "auto"]} /* Largura total no mobile */
+                            width={["100%", "auto"]}
                         >
-                            Limpar
+                            Limpar {/* ← SEM EMOJI */}
                         </Button>
                     )}
                 </ButtonContainer>
             </SearchContainer>
-
-            {/* Mostra o termo buscado */}
-            {searchTerm && (
-                <Box textAlign="center" mb={Spaces.TWO}>
-                    <p>
-                        Resultados para: <strong>"{searchTerm}"</strong>
-                        {filteredHeroes.length > 0 && (
-                            <span> - {filteredHeroes.length} heróis encontrados</span>
-                        )}
-                    </p>
-                </Box>
-            )}
 
             <HeroesGrid px={[Spaces.ONE, Spaces.TWO]} pb={[Spaces.ONE, Spaces.TWO]}>
                 {isLoadingHeroes && (
@@ -143,7 +123,7 @@ export function Search() {
                 )}
 
                 {error && (
-                    <StatusMessage style={{ color: '#FF0000' }}>
+                    <StatusMessage style={{ color: '#ff6b6b' }}>
                         {error.message || "Erro ao carregar dados"}
                     </StatusMessage>
                 )}

@@ -1,23 +1,24 @@
+// common-components/Description/Description.js
 import styled from 'styled-components';
 import {
-    Colors,
-    FontFamilies,
-    FontLineHeights,
-    FontSizes,
-    FontWeights,
+	Colors,
+	FontFamilies,
+	FontWeights,
+	FontLineHeights,
+	FontSizes
 } from '../../shared/DesignTokens';
-export const Description = styled.span`
-	font-family: ${FontFamilies.PRIMARY};
-	font-weight: ${FontWeights.REGULAR};
-	line-height: ${FontLineHeights.SMALL};
-	font-size: ${FontSizes.ONE_QUARTER};
-	color: ${(props) => props.color};
-	margin: 0;
-	padding: 0;
-    strong {
-		font-weight: ${FontWeights.BOLD};
-	}
+
+export const Description = styled.p`
+  font-family: ${FontFamilies.PRIMARY};
+  font-weight: ${FontWeights.NORMAL};
+  line-height: ${FontLineHeights.NORMAL};
+  font-size: ${FontSizes.SM};
+  color: ${(props) => props.color || Colors.GRAY_700};
+  margin: 0;
+
+  strong {
+    font-weight: ${FontWeights.SEMIBOLD};
+  }
 `;
-Description.defaultProps = {
-    color: Colors.NEUTRAL_BLACK,
-};
+
+export default Description;

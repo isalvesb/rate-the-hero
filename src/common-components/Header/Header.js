@@ -14,15 +14,15 @@ const Wrapper = styled.header`
 	}
 `;
 const Logo = styled.img.attrs({
-    src: rateTheHeroLogo,
-    alt: 'Logo do "Rate the Hero!"',
+	src: rateTheHeroLogo,
+	alt: 'Logo do "Rate the Hero!"',
 })`
 	height: 100%;
 `;
 export function Header() {
-    return (
-        <Wrapper>
-            <Logo />
-        </Wrapper>
-    );
+	return (
+		<Wrapper>
+			<Logo />
+		</Wrapper>
+	);
 }

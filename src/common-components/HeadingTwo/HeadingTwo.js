@@ -1,20 +1,20 @@
+// common-components/HeadingTwo/HeadingTwo.js
 import styled from 'styled-components';
 import {
-    Colors,
-    FontFamilies,
-    FontLineHeights,
-    FontSizes,
-    FontWeights,
+	Colors,
+	FontFamilies,
+	FontWeights,
+	FontLineHeights,
+	FontSizes
 } from '../../shared/DesignTokens';
+
 export const HeadingTwo = styled.h2`
-	font-family: ${FontFamilies.PRIMARY};
-	font-weight: ${FontWeights.BOLD};
-	line-height: ${FontLineHeights.MEDIUM};
-	font-size: ${FontSizes.THREE};
-	color: ${(props) => props.color};
-	margin: 0;
-	padding: 0;
+  font-family: ${FontFamilies.PRIMARY};
+  font-weight: ${FontWeights.BOLD};
+  line-height: ${FontLineHeights.TIGHT};
+  font-size: ${FontSizes.XL};
+  color: ${(props) => props.color || Colors.GRAY_900};
+  margin: 0;
 `;
-HeadingTwo.defaultProps = {
-    color: Colors.NEUTRAL_BLACK,
-};
+
+export default HeadingTwo;

@@ -1,54 +1,43 @@
+// common-components/SearchField/SearchField.js
 import styled from 'styled-components';
 import {
-    BorderRadiuses,
-    Colors,
-    FontFamilies,
-    FontLetterSpacings,
-    FontSizes,
-    Spaces,
+	Colors,
+	BorderRadiuses,
+	Shadows,
+	Spaces,
+	FontSizes,
+	FontFamilies,
+	FontLetterSpacings,
+	Transitions
 } from '../../shared/DesignTokens';
-import searchIcon from '../../assets/icons/search.svg';
-const Wrapper = styled.div`
-	display: grid;
-	align-items: center;
-	grid-template-columns: 16px 1fr;
-	gap: ${Spaces.TWO};
-	padding: ${Spaces.NONE} ${Spaces.TWO};
-	background-color: ${Colors.GRAY_200};
-	border-radius: ${BorderRadiuses.ONE};
-	height: 40px;
+
+export const SearchField = styled.input`
+  width: 100%;
+  height: 48px;
+  padding: 0 ${Spaces.TWO};
+  font-size: ${FontSizes.BASE};
+  font-family: ${FontFamilies.PRIMARY};
+  background: ${Colors.WHITE};
+  color: ${Colors.GRAY_800};
+  border: 2px solid ${Colors.GRAY_300};
+  border-radius: ${BorderRadiuses.PILL};
+  box-shadow: ${Shadows.SM};
+  transition: ${Transitions.DEFAULT};
+  letter-spacing: ${FontLetterSpacings.NORMAL};
+
+  &::placeholder {
+    color: ${Colors.GRAY_500};
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${Colors.PRIMARY};
+    box-shadow: ${Shadows.GLOW};
+  }
+
+  &:hover {
+    border-color: ${Colors.GRAY_400};
+  }
 `;
-const Icon = styled.img.attrs({
-    src: searchIcon,
-})`
-	width: 16px;
-	height: 16px;
-`;
-const Input = styled.input`
-	font-size: ${FontSizes.TWO};
-	font-family: ${FontFamilies.PRIMARY};
-	border: none;
-	outline: none;
-	padding: ${Spaces.ONE};
-	color: ${Colors.GRAY_600};
-	background: none;
-	letter-spacing: ${FontLetterSpacings.MEDIUM};
-	&amp;::placeholder {
-		color: ${Colors.GRAY_400};
-		opacity: 1;
-	}
-	&amp;:-ms-input-placeholder {
-		color: ${Colors.GRAY_400};
-	}
-	&amp;::-ms-input-placeholder {
-		color: ${Colors.GRAY_400};
-	}
-`;
-export function SearchField(props) {
-    return (
-        <Wrapper>
-            <Icon />
-            <Input {...props} type="text" />
-        </Wrapper>
-    );
-}
+
+export default SearchField;

@@ -1,23 +1,22 @@
+// common-components/Caption/Caption.js
 import styled from 'styled-components';
 import {
 	Colors,
 	FontFamilies,
+	FontWeights,
 	FontLineHeights,
 	FontSizes,
-	FontWeights,
-	FontLetterSpacings,
+	FontLetterSpacings
 } from '../../shared/DesignTokens';
+
 export const Caption = styled.span`
-	font-family: ${FontFamilies.PRIMARY};
-	font-weight: ${FontWeights.REGULAR};
-	line-height: ${FontLineHeights.SMALL};
-	font-size: ${FontSizes.ONE_HALF};
-	color: ${(props) => props.color};
-	margin: 0;
-	padding: 0;
-    text-transform: uppercase;
-	letter-spacing: ${FontLetterSpacings.MEDIUM};
+  font-family: ${FontFamilies.PRIMARY};
+  font-weight: ${FontWeights.MEDIUM};
+  line-height: ${FontLineHeights.TIGHT};
+  font-size: ${FontSizes.XS};
+  letter-spacing: ${FontLetterSpacings.WIDE};
+  text-transform: uppercase;
+  color: ${(props) => props.color || Colors.GRAY_600};
 `;
-Caption.defaultProps = {
-	color: Colors.NEUTRAL_BLACK,
-};
+
+export default Caption;
